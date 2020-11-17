@@ -1,19 +1,24 @@
 import './App.css';
 import styled from 'styled-components';
-import { useState, useEffect, useRef, createContext } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import Form from './components/Form';
-import Todos from './components/Todos';
+import { Todos, Button} from './components/Todos';
 
 const AppWrapper = styled.div`
   max-width: 1920px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-item: center;
 `
 
-const Button = styled.button`
-  margin: 5px 3px;
+const TodosWrapper = styled.div`
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 `
-
-const StyleContext = createContext(Button);
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -98,34 +103,32 @@ function App() {
   }, []);
   
   return (
-    <StyleContext.Provider>
-      <AppWrapper className="App">
-        <Form handlers={handlers} inputsContent={inputs.content}/>
-        <div className="filters">
-          <Button className="filters__allBtn" data-filter="all" onClick={handlers.filtersChange}>All</Button>
-          <Button className="filters__completedBtn" data-filter={true} onClick={handlers.filtersChange}>Completed</Button>
-          <Button className="filters__uncompletedBtn" data-filter={false} onClick={handlers.filtersChange}>Uncompleted</Button>
+    <AppWrapper className="App">
+      <Form handlers={handlers} inputsContent={inputs.content}/>
+      <div className="filters">
+        <Button className="filters__allBtn" data-filter="all" onClick={handlers.filtersChange}>All</Button>
+        <Button className="filters__completedBtn" data-filter={true} onClick={handlers.filtersChange}>Completed</Button>
+        <Button className="filters__uncompletedBtn" data-filter={false} onClick={handlers.filtersChange}>Uncompleted</Button>
+      </div>
+      <TodosWrapper className="todos">
+        <div className="todos__header">
+          <span className="todos__header__title">My Todos</span>
+          <Button className="todos__header__clearAllBtn" onClick={handlers.clearAll}>Clear All Todos</Button>
         </div>
-        <div className="todos">
-          <div className="todos__header">
-            <span className="todos__header__title">My Todos</span>
-            <Button className="todos__header__clearAllBtn" onClick={handlers.clearAll}>Clear All Todos</Button>
-          </div>
-          {
-            todos
-              .filter( todo => {
-                return filter === 'all'
-                  ? true
-                  : filter
-                    ? todo.isCompleted : !todo.isCompleted
-              })
-              .map( todo => {
-                return <Todos StyleContext={StyleContext} todo={todo} key={todo.id} handlers={handlers} />
-              })
-          }
-        </div>
-      </AppWrapper>
-    </StyleContext.Provider>
+        {
+          todos
+            .filter( todo => {
+              return filter === 'all'
+                ? true
+                : filter
+                  ? todo.isCompleted : !todo.isCompleted
+            })
+            .map( todo => {
+              return <Todos todo={todo} key={todo.id} handlers={handlers} />
+            })
+        }
+      </TodosWrapper>
+    </AppWrapper>
   );
 }
 

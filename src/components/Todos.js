@@ -2,24 +2,33 @@ import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 const TodoCard = styled.div`
-  text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'}
+  text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'};
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
-export default function Todos({StyleContext, todo, handlers}) {
-  const Button = useContext(StyleContext);
+const Button = styled.button`
+  margin: 5px 3px;
+`
+
+function Todos({StyleContext, todo, handlers}) {
   return(
     <TodoCard className="todo__card" data-id={todo.id} isCompleted={todo.isCompleted}>
       <div className="todo__card__content">
         {todo.content}
       </div>
       <div className="todo__card__controls">
-        <button className="todo__card__controls__statusBtn" onClick={handlers.changeStatus}>
+        <Button className="todo__card__controls__statusBtn" onClick={handlers.changeStatus}>
           {(!todo.isCompleted && 'Done') || (todo.isCompleted && 'Undone')}
-        </button>
-        <button className="todo__card__controls__deleteBtn" onClick={handlers.deleteTodo}>
+        </Button>
+        <Button className="todo__card__controls__deleteBtn" onClick={handlers.deleteTodo}>
           Delete
-        </button>
+        </Button>
       </div>
     </TodoCard>
   )
 }
+
+export {Todos, Button};
