@@ -2,19 +2,19 @@ import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 const TodoCard = styled.div`
-  text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'};
+  text-decoration: ${(props) => (props.isCompleted ? 'line-through' : 'none')};
   max-width: 500px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const Button = styled.button`
   margin: 5px 3px;
-`
+`;
 
-function Todos({StyleContext, todo, handlers}) {
-  return(
+function Todos({ StyleContext, todo, handlers }) {
+  return (
     <TodoCard className="todo__card" data-id={todo.id} isCompleted={todo.isCompleted}>
       <div className="todo__card__content">
         {todo.content}
@@ -28,7 +28,7 @@ function Todos({StyleContext, todo, handlers}) {
         </Button>
       </div>
     </TodoCard>
-  )
+  );
 }
 
-export {Todos, Button};
+export { Todos, Button };
