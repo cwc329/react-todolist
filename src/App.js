@@ -22,7 +22,7 @@ const TodosWrapper = styled.div`
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [inputs, setInputs] = useState({ content: '' });
+  const [inputs, setInputs] = useState({ content: '', editingContent: '' });
   const [filter, setFilter] = useState('all');
 
   const id = useRef(1);
@@ -49,9 +49,7 @@ function App() {
 
     inputChange: (e) => {
       setInputs(
-        {
-          content: e.target.value,
-        },
+        { ...inputs, content: e.target.value },
       );
     },
 
@@ -75,11 +73,48 @@ function App() {
     editBtnClick: (e) => {
       const selectId = Number(e.target.closest('.todo__card').attributes['data-id'].value);
       setTodos(
+        todos.map((todo) => (todo.id !== selectId
+          ? { ...todo, isEditing: false }
+          : { ...todo, isEditing: true }
+        )),
+      );
+      setInputs(
+        { ...inputs, editingContent: e.target.value }
+      )
+    },
+
+    editInputChange: e => {
+      setInputs(
+        { ...inputs, editingContent: e.target.value }
+      )
+    },
+
+    changeTodo: e =>{
+      if (!inputs.editingContent) return;
+      const selectId = Number(e.target.closest('.todo__card').attributes['data-id'].value);
+      setTodos(
         todos.map((todo) => (todo.id !== selectId ? todo : {
           ...todo,
-          isEditing: !todo.isEditing,
+          content: inputs.editingContent,
+          isEditing: false
         })),
       );
+      setInputs(
+        {...inputs, editingContent: ''}
+      )
+    },
+
+    cancelEditing: e => {
+      const selectId = Number(e.target.closest('.todo__card').attributes['data-id'].value);
+      setTodos(
+        todos.map((todo) => (todo.id !== selectId ? todo : {
+          ...todo,
+          isEditing: false
+        })),
+      );
+      setInputs(
+        {...inputs, editingContent: ''}
+      )
     },
 
     filtersChange: (e) => {
@@ -95,8 +130,8 @@ function App() {
   };
 
   useEffect(() => {
-
-  }, []);
+    console.log(inputs)
+  }, [inputs]);
 
   return (
     <AppWrapper className="App">

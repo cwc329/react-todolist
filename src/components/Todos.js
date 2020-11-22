@@ -2,11 +2,15 @@ import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 const TodoCard = styled.div`
-  text-decoration: ${(props) => (props.isCompleted ? 'line-through' : 'none')};
+  
   max-width: 500px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & .todo__card__content {
+    text-decoration: ${(props) => (props.isCompleted ? 'line-through' : 'none')};
+  }
 `;
 
 const Button = styled.button`
@@ -16,17 +20,24 @@ const Button = styled.button`
 function Todos({ StyleContext, todo, handlers }) {
   return (
     <TodoCard className="todo__card" data-id={todo.id} isCompleted={todo.isCompleted}>
-      <div className="todo__card__content">
-        {todo.content}
-      </div>
-      <div className="todo__card__controls">
-        <Button className="todo__card__controls__statusBtn" onClick={handlers.changeStatus}>
-          {(!todo.isCompleted && 'Done') || (todo.isCompleted && 'Undone')}
-        </Button>
-        <Button className="todo__card__controls__deleteBtn" onClick={handlers.deleteTodo}>
-          Delete
-        </Button>
-      </div>
+      {todo.isEditing && <textarea onChange={handlers.editInputChange} defaultValue={todo.content}></textarea>}
+      {todo.isEditing && <div className="todo__card__controls">
+        <Button className="todo__card__controls__cancelBtn" onClick={handlers.cancelEditing}>Cancel</Button>
+        <Button className="todo__card__controls__changeBtn" onClick={handlers.changeTodo}>Change</Button>
+      </div>}
+      {!todo.isEditing && <div className="todo__card__content">{todo.content}</div>}
+      {!todo.isEditing
+        && (<div className="todo__card__controls">
+          <Button className="todo__card__controls__statusBtn" onClick={handlers.changeStatus}>
+            {(!todo.isCompleted && 'Done') || (todo.isCompleted && 'Undone')}
+          </Button>
+          <Button className="todo__card__contorls__editBtn" onClick={handlers.editBtnClick}>
+            Edit
+          </Button>
+          <Button className="todo__card__controls__deleteBtn" onClick={handlers.deleteTodo}>
+            Delete
+          </Button>
+        </div>)}
     </TodoCard>
   );
 }

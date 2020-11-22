@@ -4,10 +4,6 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -24,5 +20,11 @@ module.exports = {
     'no-unused-vars': 'off',
     'consistent-return': 'off',
     'no-undef': 'off',
+    'no-plusplus': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-filename-extension': 'off',
+    'no-nested-ternary': 'off',
+    'react/prop-types': 'off',
+    'react/button-has-type': 'off'
   },
 };
