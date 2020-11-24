@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 const TodoCard = styled.div`
-  
   max-width: 500px;
   display: flex;
   justify-content: space-between;
